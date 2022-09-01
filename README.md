@@ -6,23 +6,171 @@
 
 ## Instructions
 
-Let's create a `Library` class that holds books. We will need to create the
-`Book` class as well, and we'll define a book as something with the following
-properties:
+Create a `Library` class that holds a `List` of `Book` objects. This may look
+similar to some example code we have used in the past, except before we always
+had the `Library` class hold an array of books. A `List` will be a better data
+structure for us to use since it is dynamic, and we can continuously add more
+books.
 
-1. Title
-2. Genre
-3. Number of pages
+Follow the given instructions and tips:
 
-This library will hold books that the user defines, so create a loop that asks
-the user for information about a single book, then create the book and add it to
-the library. Then loop again and ask the user if they want to add another book.
+- Create a `Book` class.
+  - The `Book` class will need the following properties:
+    - Title
+    - Author
+    - Genre
+    - Number of pages
+  - The `Book` class will also need accessor and mutator methods for accessing
+    the above properties.
+- Create a `Library` class.
+  - The `Library` class will need the following properties:
+    - List of `Book` objects
+  - The `Library` class will need to be able to add a `Book` to its library.
+  - The `Library` class will need to be able to display the `Book` objects in
+    its library.
+  - The `Library` class will need to be able to check if a `Book` object exists
+    in its library based off the title.
+- Use the `LibraryDriver` class to run your code and use as a reference to how
+  your code will be tested.
 
-Tips:
+## Starter Code
 
-1. Since you don't know how many books the user is going to create, it makes
-   sense to store the books in a `List`, so you can simply add a book every time
-   you go through your loop
-2. Your `Library` class will hold the list of books
-3. You will need a "runner" class that has the loop logic to gather the book
-   information from the user
+Consider the driver class when writing the code for the `Book` and `Library`
+classes:
+
+```java
+import java.util.Scanner;
+
+public class LibraryDriver {
+    public static void main(String[] args) {
+        Library library = new Library();
+        Scanner scanner = new Scanner(System.in);
+
+        int choice = -1;
+        do {
+            printMenu();
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 0:
+                    break;
+                case 1:
+                    Book book = promptAddBook();
+                    if (library.addBook(book)) {
+                        System.out.println(book.getTitle() + " has been added to the library!");
+                    } else {
+                        System.out.println(book.getTitle() + " could not be added to the library.");
+                    }
+                    break;
+                case 2:
+                    library.displayBooks();
+                    break;
+                case 3:
+                    String title = promptTitle();
+                    if (library.findBook(title)) {
+                        System.out.println("We found the book titled " + title);
+                    } else {
+                        System.out.println("We could not find the book titled " + title);
+                    }
+                    break;
+                default:
+                    System.err.println("An error has occurred!");
+            }
+            System.out.println();
+        } while (choice != 0);
+    }
+
+    public static void printMenu() {
+        System.out.println("0. Exit");
+        System.out.println("1. Add book to library");
+        System.out.println("2. Show books in library");
+        System.out.println("3. Get book from library");
+        System.out.println();
+    }
+
+    public static Book promptAddBook() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What is the title of the book?");
+        String title = scanner.nextLine();
+        System.out.println("What is the author of the book?");
+        String author = scanner.nextLine();
+        System.out.println("What is the genre of the book?");
+        String genre = scanner.nextLine();
+        System.out.println("How many pages is the book?");
+        int pages = scanner.nextInt();
+        return new Book(title, author, genre, pages);
+    }
+
+    public static String promptTitle() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What is the title of the book you are looking for?");
+        return scanner.nextLine();
+    }
+}
+```
+
+## Example Output
+
+Here is an example run of the code for your reference. Make sure your output
+looks the same when given these values:
+
+```plaintext
+0. Exit
+1. Add book to library
+2. Show books in library
+3. Get book from library
+
+1
+What is the title of the book?
+Anne of Green Gables
+What is the author of the book?
+L.M. Montgomery
+What is the genre of the book?
+Fiction
+How many pages is the book?
+336
+Anne of Green Gables has been added to the library!
+
+0. Exit
+1. Add book to library
+2. Show books in library
+3. Get book from library
+
+1
+What is the title of the book?
+Little Women
+What is the author of the book?
+Louisa May Alcott
+What is the genre of the book?
+Fiction
+How many pages is the book?
+759
+Little Women has been added to the library!
+
+0. Exit
+1. Add book to library
+2. Show books in library
+3. Get book from library
+
+3
+What is the title of the book you are looking for?
+Peter Pan
+We could not find the book titled Peter Pan
+
+0. Exit
+1. Add book to library
+2. Show books in library
+3. Get book from library
+
+3
+What is the title of the book you are looking for?
+Anne of Green Gables
+We found the book titled Anne of Green Gables
+
+0. Exit
+1. Add book to library
+2. Show books in library
+3. Get book from library
+
+0
+```
