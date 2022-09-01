@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class LibraryDriver {
@@ -9,37 +10,43 @@ public class LibraryDriver {
         do {
             printMenu();
             choice = scanner.nextInt();
-
-            switch (choice) {
-                case 0:
-                    break;
-                case 1:
-                    Book book = promptAddBook();
-                    if (library.addBook(book)) {
-                        System.out.println(book.getTitle() + " has been added to the library!");
-                    } else {
-                        System.out.println(book.getTitle() + " could not be added to the library.");
-                    }
-                    break;
-                case 2:
-                    library.displayBooks();
-                    break;
-                case 3:
-                    String title = promptTitle();
-                    if (library.findBook(title)) {
-                        System.out.println("We found the book titled " + title);
-                    } else {
-                        System.out.println("We could not find the book titled " + title);
-                    }
-                    break;
-                default:
-                    System.err.println("An error has occurred!");
+            try {
+                switch (choice) {
+                    case 0:
+                        break;
+                    case 1:
+                        Book book = promptAddBook();
+                        if (library.addBook(book)) {
+                            System.out.println(book.getTitle() + " has been added to the library!");
+                        } else {
+                            System.out.println(book.getTitle() + " could not be added to the library.");
+                        }
+                        break;
+                    case 2:
+                        library.displayBooks();
+                        break;
+                    case 3:
+                        String title = promptTitle();
+                        if (library.findBook(title)) {
+                            System.out.println("We found the book titled " + title);
+                        } else {
+                            System.out.println("We could not find the book titled " + title);
+                        }
+                        break;
+                    default:
+                        System.err.println("An error has occurred!");
+                }
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();    // Clear the invalid input
+                System.out.println("Invalid input - " + inputMismatchException.getMessage());
             }
+
             System.out.println();
         } while (choice != 0);
     }
 
     public static void printMenu() {
+        System.out.println("Welcome to the library! What would you like to do?");
         System.out.println("0. Exit");
         System.out.println("1. Add book to library");
         System.out.println("2. Show books in library");
