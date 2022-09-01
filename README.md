@@ -87,6 +87,7 @@ public class LibraryDriver {
   }
 
   public static void printMenu() {
+    System.out.println("Welcome to the library! What would you like to do?");
     System.out.println("0. Exit");
     System.out.println("1. Add book to library");
     System.out.println("2. Show books in library");
